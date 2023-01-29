@@ -11,16 +11,8 @@ use gamesense::client::GameSenseClient;
 use gamesense::handler::screen;
 use serde_json::json;
 
-/*
-fn pause() {
-    let mut stdout = stdout();
-    stdout.write(b"Press Enter to continue...").unwrap();
-    stdout.flush().unwrap();
-    stdin().read(&mut [0]).unwrap();
-}
-*/
 fn main() -> Result<()> {
-    let mut client = GameSenseClient::new("MY_CLOCK", "Current Time and Date", "cfxxldev", None)?;
+    let client = GameSenseClient::new("MY_CLOCK", "Current Time and Date", "cfxxldev", None)?;
 
     let handler = screen::ScreenHandler::new(
         "screened",
@@ -71,7 +63,6 @@ fn main() -> Result<()> {
     );
 
     client.bind_event("CLOCK_EVENT", None, None, None, None, vec![handler])?;
-    client.start_heartbeat();
     loop {
         let system_time = SystemTime::now();
         let datetime: DateTime<Local> = system_time.into();
@@ -86,8 +77,4 @@ fn main() -> Result<()> {
         )?;
         std::thread::sleep(std::time::Duration::from_millis(500));
     }
-    /*
-    client.stop_heartbeat()?;
-    Ok(())
-    */
 }
