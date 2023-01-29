@@ -2,9 +2,9 @@ name: Rust
 
 on:
   push:
-    branches: [ "develop", "main" ]
+    branches: [ "develop" ] 
   pull_request:
-    branches: [ "develop", "main" ]
+    branches: [ "develop" ]
 
 env:
   CARGO_TERM_COLOR: always
@@ -18,13 +18,3 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build
       run: cargo build --verbose
-
-  release:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: manoadamro/rust-release@v1
-        with:
-          owner: ${{ github.repository_owner }}
-          repo: ${{ github.repository }}
-          token: ${{ secrets.GITHUB_TOKEN }}
