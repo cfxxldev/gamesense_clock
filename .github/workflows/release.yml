@@ -1,17 +1,29 @@
 name: release
 
 on:
-  push:
-    branches: [ "main" ] 
-  pull_request:
-    branches: [ "main" ]
+  release:
+    types: [created]
+
 jobs:
   release:
-    runs-on: windows-latest
+    name: publish ${{ matrix.name }}
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - target: x86_64-pc-windows-gnu
+            suffix: windows-x86_64
+            archive: zip
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: manoadamro/rust-release@v1
+      - name: Clone test repository
+        uses: actions/checkout@v2
+      - uses: xhaiker/rust-release.action@v1.0.0
+        name: build ${{ matrix.name }}
         with:
-          owner: ${{ github.repository_owner }}
-          repo: ${{ github.repository }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          rust_target: ${{ matrix.target }}
+          archive_suffix: ${{ matrix.suffix }}
+          archive_types: ${{ matrix.archive }}
+          extra_files: "README.md README_zh.md LICENSE"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
