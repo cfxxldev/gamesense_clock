@@ -1,4 +1,4 @@
-name: create release
+name: create_release
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ "main" ]
 jobs:
-  release:
+  create_release:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
